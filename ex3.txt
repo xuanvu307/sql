@@ -1,0 +1,83 @@
+-- Tạo Bảng nha_cung_cap: mama_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone
+                            
+CREATE TABLE nha_cung_cap (
+	ma_nha_cung_cap VARCHAR(50),
+	ten_nha_cung_cap VARCHAR(50),
+	dia_chi VARCHAR(50),     
+	phone VARCHAR(15)        
+);                          
+                            
+-- Tạo bảng thuoc: ma_thuoc, ten_thuoc, don_vi_tin, so_luong
+                            
+CREATE TABLE thuoc (        
+	ma_thuoc INT PRIMARY KEY AUTO_INCREMENT,
+	ten_thuoc VARCHAR(50),
+	don_vi_tin VARCHAR(10),
+	so_luong INT
+);
+
+-- Bảng nhan_vien: ma_nhan_vien (số, tự tăng), ten_nhan_vien, chuc_vu, score (Điểm chuyên cần), Salary
+
+CREATE TABLE nhan_vien (
+	ma_nhan_vien INT PRIMARY KEY AUTO_INCREMENT,
+	ten_nhan_vien VARCHAR(50),
+	chuc_vu VARCHAR(50),
+	score INT,
+	salary INT
+);
+
+-- Mỗi bảng tạo 10 dòng dữ liệu ( tạo random qua mockaroo)
+
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('VNDP', 'Abata', 'HCM', '180-950-7352');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('MDPO', 'Linklinks', 'HCM', '752-706-2157');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) VALUES ('SWPE', 'Midel', 'HP', '195-391-7110');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('SYEC', 'Oyoba', 'HN', '990-493-7989');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('FQNC', 'Roombo', 'HP', '806-569-7875');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('SMDA', 'Skippad', 'HP', '755-310-4605');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('SKCO', 'Yombu', 'HP', '668-487-5500');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('MHCU', 'Tagpad', 'HCM', '991-779-5478');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('3AK5', 'Skiba', 'HP', '945-845-8637');
+insert into nha_cung_cap (ma_nha_cung_cap, ten_nha_cung_cap, dia_chi, phone) values ('PABT', 'Gevee', 'HP', '561-996-6755');
+
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (1, 'Oyonder', 'Vỉ', 26);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (2, 'Oba', 'Hộp', 82);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (3, 'Wordpedia', 'Vỉ', 98);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (4, 'Youspan', 'Vỉ', 7);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (5, 'Devbug', 'Vỉ', 76);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (6, 'Babblestorm', 'Viên', 91);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (7, 'Demizz', 'Viên', 13);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (8, 'Jetpulse', 'Hộp', 96);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (9, 'Bubblemix', 'Vỉ', 11);
+insert into thuoc (ma_thuoc, ten_thuoc, don_vi_tin, so_luong) values (10, 'Zoonoodle', 'Viên', 4);
+
+
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (1, 'Itzkovwitch', 'NV', 83, 13733509);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (2, 'Smurfit', 'NV', 80, 8582153);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (3, 'Winward', 'NV', 70, 8167805);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (4, 'Styan', 'NV', 68, 9268887);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (5, 'Simonato', 'QL', 55, 13540937);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (6, 'Seleway', 'NV', 62, 8234715);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (7, 'Vaines', 'NV', 50, 13575676);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (8, 'McGahey', 'QL', 67, 14245024);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (9, 'Clace', 'NV', 72, 13573526);
+insert into nhan_vien (ma_nhan_vien, ten_nhan_vien, chuc_vu, score, salary) values (10, 'Grece', 'NV', 100, 11269185);
+	
+
+-- Tìm tất cả các nhà cung cấp có địa chỉ ở HN
+
+SELECT * FROM nha_cung_cap WHERE dia_chi = 'HN';
+
+-- Đếm số lượng loại thuốc có của cửa hàng
+
+SELECT COUNT(ten_thuoc) FROM thuoc;
+
+-- GROUP BY ten_thuoc
+
+SELECT ten_thuoc, COUNT(ten_thuoc)
+FROM thuoc
+GROUP BY ten_thuoc ;
+
+-- Tính tổng trung bình điểm chuyên cần của nhân viên và tiền lương phải trả cho tất cả nhân viên trong 1 tháng
+
+SELECT AVG(score) FROM nhan_vien;
+SELECT SUM(salary) FROM nhan_vien;
