@@ -1,0 +1,190 @@
+-- tạo database techmaster_system
+
+CREATE DATABASE IF NOT EXISTS techmaster_system;
+
+-- Bảng blog(id, title, description, created_at)
+
+CREATE TABLE IF NOT EXISTS blog(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(50),
+	DESCRIPTION VARCHAR(250),
+	created_at DATE
+);
+
+-- Bảng role(id, role_name)
+
+CREATE TABLE IF NOT EXISTS role(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	role_name VARCHAR(50)
+);
+
+-- Bảng user(id, full_name, phone, email)
+
+CREATE TABLE IF NOT EXISTS user(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(50),
+	phone VARCHAR(15),
+	email VARCHAR(50),
+	role_id INT,
+	FOREIGN KEY(role_id) REFERENCES ROLE(id)
+);
+
+-- Bảng course(id, course_name, description, price, course_type, vote)
+
+CREATE TABLE IF NOT EXISTS course(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	course_name VARCHAR(50),
+	description VARCHAR(250),
+	price INT,
+	course_type VARCHAR(50),
+	vote DOUBLE
+);
+
+-- Bảng opening_schedule(id, start_date, address, study_day, study_time)
+
+CREATE TABLE IF NOT EXISTS opening_schedule(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	start_date DATE,
+	address VARCHAR(250),
+	study_day VARCHAR(50),
+	study_time VARCHAR(50) 
+);
+
+-- Bảng transaction_history(id, registration_date, status)
+
+CREATE TABLE IF NOT EXISTS transaction_history(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	registration_date DATE,
+	STATUS VARCHAR(50),
+	user_id INT,
+	FOREIGN KEY(user_id) REFERENCES user(id)
+);
+
+-- Bảng account_banking(id, bank_name, account_num)
+
+CREATE TABLE IF NOT EXISTS account_banking(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	bank_name VARCHAR(50),
+	account_num VARCHAR(50),
+	user_id INT UNIQUE,
+	FOREIGN KEY(user_id) REFERENCES user(id)
+);
+
+-- Bảng quan hệ nhiều - nhiều
+
+CREATE TABLE IF NOT EXISTS course_user(
+	user_id INT,
+	course_id INT,
+	FOREIGN KEY(user_id) REFERENCES user(id),
+	FOREIGN KEY(course_id) REFERENCES course(id)
+);
+
+CREATE TABLE IF NOT EXISTS course_openSchedule(
+	course_id INT,
+	openSchedule_id INT,
+	FOREIGN KEY(openSchedule_id) REFERENCES opening_schedule(id),
+	FOREIGN KEY(course_id) REFERENCES course(id)
+);
+
+-- Insert mỗi bảng ít nhất 5 records
+
+INSERT INTO role(role_name)
+VALUES
+	('Online'),
+	('Onlab');
+
+INSERT INTO user
+	(NAME,phone,email,role_id)
+VALUES 
+	('Nguyen Van A','0123123123', 'nguyenvana@gmail.com', 1),
+	('Nguyen Van B','0123123123', 'nguyenvanb@gmail.com', 1),
+	('Nguyen Van C','0123123123', 'nguyenvanc@gmail.com', 2),
+	('Nguyen Van D','0123123123', 'nguyenvand@gmail.com', 1),
+	('Nguyen Van E','0123123123', 'nguyenvane@gmail.com', 2);
+	
+INSERT INTO blog
+	(title,DESCRIPTION,created_at)
+VALUES
+	('Blog A', 'Mô tả A', '2020-11-10'),
+	('Blog B', 'Mô tả B', '2021-12-10'),
+	('Blog C', 'Mô tả C', '2022-08-25'),
+	('Blog D', 'Mô tả D', '2022-10-15'),
+	('Blog E', 'Mô tả E', '2021-08-05');
+INSERT INTO course
+	(course_name,DESCRIPTION,price,course_type,vote)
+VALUES
+	('Khóa Java 1', 'Lập Trình Java', 1000, 'Dài hạn', 5),
+	('Khóa HTML 5', 'Lập Trình HTML', 600, 'Dài hạn', 4.5),
+	('Khóa Java 2', 'Lập Trình Java', 1100, 'Dài hạn', 3),
+	('Khóa CSS 1', 'Lập Trình CSS', 850, 'Ngắn hạn', 4.8),
+	('Khóa Python 4', 'Lập Trình Python', 1400, 'Ngắn hạn', 3.9);
+INSERT INTO opening_schedule
+	(start_date,address,study_day,study_time)
+VALUES
+	('2021-10-12', 'Tố Hữu', 'Thứ 3, Thứ 5, Thứ 7', '18h'),
+	('2021-12-08', 'Tố Hữu', 'Thứ 3, Thứ 5, Thứ 7', '18h'),
+	('2022-08-16', 'Tố Hữu', 'Thứ 2, Thứ 4, Thứ 6', '18h'),
+	('2022-10-19', 'Tố Hữu', 'Thứ 3, Thứ 5, Thứ 7', '18h'),
+	('2022-11-01', 'Tố Hữu', 'Thứ 2, Thứ 4, Thứ 6', '18h');
+
+INSERT INTO transaction_history
+	(registration_date,status,user_id)
+VALUES
+	('2021-10-08', 'Hoàn thành', 1),
+	('2021-08-11', 'Hoàn thành', 4),
+	('2022-08-12', 'Đang Học', 2),
+	('2022-09-18', 'Đang Học', 3),
+	('2022-10-15', 'Đang Học', 1);
+
+INSERT INTO account_banking
+	(bank_name,account_num,user_id)
+VALUES
+	('BIDV','000111222333',1),
+	('ACB','000111222333',2),
+	('MB','000111222333',4),
+	('Agri','000111222333',5),
+	('BIDV','000111222333',3);
+INSERT INTO course_openschedule
+VALUES
+	(1,1),
+	(2,1),
+	(1,4),
+	(4,3),
+	(2,5);
+INSERT INTO course_user
+VALUES
+	(1,1),
+	(2,1),
+	(1,4),
+	(4,3),
+	(2,5);
+
+-- Hiển thị Hồ sơ cá nhân của các user (id, name, phone, email, role, thông thẻ tin ngân hàng)
+
+SELECT user.id,NAME,phone,email,role_name,bank_name,account_num FROM user
+INNER JOIN role ON user.role_id = role.id
+INNER JOIN account_banking
+ON account_banking.user_id = user.id
+ORDER BY user.id;
+
+-- Tìm kiếm tất cả các học viên đăng ký học online
+
+SELECT * FROM user
+INNER JOIN role
+ON user.role_id = role.id AND role.role_name = 'Online';
+
+-- Hiển thị lịch khai giảng và thông tin các khóa học trong buổi khai giảng đó
+
+SELECT * FROM course_openschedule
+INNER JOIN course ON course.id = course_openschedule.course_id
+INNER JOIN opening_schedule ON course_openschedule.openSchedule_id = opening_schedule.id
+ 
+-- Hiển thị chi tiết lịch sử gd của các học viên: 
+-- mã giao dịch(id), tên học viên(name_student), tên khóa học (name course), 
+-- ngày đăng ký(registration_date), trạng thái(status)
+
+SELECT user.id,user.name,course.course_name,transaction_history.registration_date,STATUS FROM user
+LEFT JOIN transaction_history ON transaction_history.user_id = user.id
+LEFT JOIN course_user ON course_user.user_id = user.id 
+LEFT JOIN course ON course_user.course_id = course.id
+
