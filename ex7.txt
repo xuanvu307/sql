@@ -1,0 +1,129 @@
+CREATE TABLE IF NOT EXISTS categories(
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	category_code VARCHAR(50) NOT NULL,
+	category_name VARCHAR(50) NOT NULL,
+	created_date DATE NOT NULL,
+	updated_date DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS suppliers(
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	supplier_code VARCHAR(50) NOT NULL,
+	supplier_name VARCHAR(50) NOT NULL,
+	image VARCHAR(50),
+	created_date VARCHAR(50) NOT NULL,
+	updated_date VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS product_discounts(
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	discount_name VARCHAR(50) NOT NULL,
+	discount_amount FLOAT,
+	start_date DATE NOT NULL,
+	end_date DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS products(
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	product_code VARCHAR(50) NOT NULL,
+	product_name VARCHAR(50) NOT NULL,
+	image VARCHAR(50),
+	description VARCHAR(50),
+	standard_cost INT,
+	quantity INT,
+	from_country VARCHAR(50),
+	product_unit ENUM('cái', 'bộ', 'quyển', 'kg'),
+	is_new ENUM('NULL', 'NEW', 'NOT_NEW'),
+	created_date DATE NOT NULL,
+	updated_date DATE NOT NULL,
+	product_discounts BIGINT,
+	FOREIGN KEY(product_discounts) REFERENCES product_discounts(id)
+);
+
+CREATE TABLE IF NOT EXISTS customers(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	username VARCHAR(50) NOT NULL,
+	password VARCHAR(50) NOT NULL,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
+	gender ENUM('NULL','MALE', 'FEMALE'),
+	email VARCHAR(50),
+	birthday DATE,
+	avartar VARCHAR(50),
+	address VARCHAR(50),
+	status VARCHAR(50),
+	created_date DATE NOT NULL,
+	updated_date DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS product_reviews(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	product_code VARCHAR(50) NOT NULL,
+	rating VARCHAR(50) NOT NULL CHECK(rating > 1 OR rating < 5),
+	comment VARCHAR(50) NOT NULL,
+	created_date DATE NOT NULL,
+	updated_date DATE NOT NULL,
+	customers_id INT,
+	products_id BIGINT,
+	FOREIGN KEY(customers_id) REFERENCES customers(id),
+	FOREIGN KEY(products_id) REFERENCES products(id)
+);
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	quantity INT NOT NULL,
+	price FLOAT NOT NULL,
+	paid_date DATE NOT NULL,
+	customers_id INT,
+	products_id BIGINT,
+	FOREIGN KEY(customers_id) REFERENCES customers(id),
+	FOREIGN KEY(products_id) REFERENCES products(id)
+);
+
+-- 1. Tìm số hóa đơn đã mua tất cả các sản phẩm do Singapore sản xuất.
+
+SELECT COUNT(from_country) FROM products
+WHERE from_country = 'Singapore';
+
+-- 2. Có bao nhiêu hóa đơn không phải của khách hàng đăng ký thành viên mua?
+
+SELECT COUNT(customers_id) FROM orders
+WHERE customers_id IS NULL;
+
+-- 3. Có bao nhiêu sản phẩm khác nhau được bán ra trong năm 2006.
+
+-- SELECT COUNT(products_id) 
+-- FROM orders 
+-- GROUP BY products_id = (SELECT * FROM orders WHERE YEAR(paid_date) = 2006);
+
+-- 4. Cho biết trị giá hóa đơn cao nhất, thấp nhất là bao nhiêu ?
+
+SELECT MAX(price), MIN(price) FROM orders;
+
+-- 5. Trị giá trung bình của tất cả các hóa đơn được bán ra trong năm 2006 là bao nhiêu?
+
+SELECT AVG(price) FROM orders;
+
+-- 6. Tính doanh thu bán hàng trong năm 2006.
+
+SELECT SUM(price) FROM orders;
+
+-- 7. Tìm số hóa đơn có trị giá cao nhất trong năm 2006.
+
+-- 8. Tìm họ tên khách hàng đã mua hóa đơn có trị giá cao nhất trong năm 2006.
+-- 9. In ra danh sách các sản phẩm (MASP, TENSP) có giá bán bằng 1 trong 3 mức giá cao nhất.
+-- 10. In ra danh sách các sản phẩm (MASP, TENSP) do “Thai Lan” sản xuất có giá bằng 1 trong 3 mức giá cao nhất (của tất cả các sản phẩm).
+-- 11. In ra danh sách các sản phẩm (MASP, TENSP) do “Trung Quoc” sản xuất có giá bằng 1 trong 3 mức giá cao nhất (của sản phẩm do “Trung Quoc” sản xuất)
+-- 12. In ra danh sách 3 khách hàng có doanh số cao nhất (sắp xếp theo kiểu xếp hạng).
+-- 13. Tính tổng số sản phẩm của từng nước sản xuất.
+-- 14. Với từng nước sản xuất, tìm giá bán cao nhất, thấp nhất, trung bình của các sản phẩm.
+-- 15. Tính doanh thu bán hàng mỗi ngày.
+-- 16. Tính tổng số lượng của từng sản phẩm bán ra trong tháng 10/2006.
+-- 17. Tìm hóa đơn có mua ít nhất 4 sản phẩm khác nhau.
+-- 18. Tìm khách hàng (MAKH, HOTEN) có số lần mua hàng nhiều nhất.
+-- 19. Tháng mấy trong năm 2006, doanh số bán hàng cao nhất ?
+-- 20. Tìm sản phẩm (MASP, TENSP) có tổng số lượng bán ra thấp nhất trong năm 2006.
+-- 21. Mỗi nước sản xuất, tìm sản phẩm (MASP,TENSP) có giá bán cao nhất.
+-- 22. Tìm nước sản xuất sản xuất ít nhất 3 sản phẩm có giá bán khác nhau.
+-- 23. Trong 10 khách hàng có doanh số cao nhất, tìm khách hàng có số lần mua hàng nhiều nhất.
+-- 
