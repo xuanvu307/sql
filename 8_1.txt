@@ -1,0 +1,114 @@
+CREATE TABLE IF NOT EXISTS categories(
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	category_code VARCHAR(50) NOT NULL,
+	category_name VARCHAR(50) NOT NULL,
+	created_date DATETIME NOT NULL,
+	updated_date DATETIME NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS products(
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	product_code VARCHAR(50) NOT NULL,
+	product_name VARCHAR(50) NOT NULL,
+	image VARCHAR(50),
+	description VARCHAR(50),
+	price INT,
+	quantity INT,
+	from_country VARCHAR(50) CHECK (from_country NOT LIKE '% %' AND from_country LIKE '%_%' AND BINARY from_country = BINARY UPPER(from_country)),
+	is_new ENUM('NEW', 'NOT_NEW') DEFAULT NULL,
+	created_date DATETIME NOT NULL,
+	updated_date DATETIME NOT NULL,
+	product_category BIGINT,
+	FOREIGN KEY(product_category) REFERENCES categories(id)
+);
+
+
+CREATE TABLE IF NOT EXISTS orders(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	quantity INT NOT NULL,
+	price INT NOT NULL,
+	paid_date DATE NOT NULL,
+	created_date DATETIME,
+	updated_date DATETIME
+);
+
+
+CREATE TABLE IF NOT EXISTS order_products(
+	order_id INT,
+	product_id BIGINT,
+	FOREIGN KEY(order_id) REFERENCES orders(id),
+	FOREIGN KEY(product_id) REFERENCES products(id)
+);
+
+INSERT INTO categories
+VALUES
+	(1,'AO', 'Áo', '2020-11-11', '2022-10-10 18:30'),
+	(2,'QUAN', 'Quần', '2020-11-11', '2022-10-10 18:30'),
+	(3,'VAY', 'Váy', '2020-11-11', '2022-10-10 18:30'),
+	(4,'GIAY', 'Giày', '2020-11-11', '2022-10-10 18:30'),
+	(5,'TAT', 'Tất', '2020-11-11', '2022-10-10 18:30'),
+	(6,'MU', 'Mũ', '2020-11-11', '2022-10-10 18:30'),
+	(7,'DEP', 'Dép', '2020-11-11', '2022-10-10 18:30');
+
+INSERT INTO products
+	(product_code,product_name,price,quantity,from_country,is_new,created_date,updated_date,product_category)
+VALUES
+	('P01', 'Áo Phông', 100000, 99, 'TRUNG_QUỐC', 'NEW', '2020-11-11', '2022-10-10 18:30',1),
+	('P02', 'Áo Phao', 100000, 99, 'VIỆT_NAM', 'NEW', '2020-11-11', '2022-10-10 18:30',1),
+	('P03', 'Giày Nam', 100000, 99, 'TRUNG_QUỐC', 'NOT_NEW', '2020-11-11', '2022-10-10 18:30',4),
+	('P04', 'Tất', 100000, 99, 'MỸ', 'NOT_NEW', '2020-11-11', '2022-10-10 18:30',5),
+	('P05', 'Quần bò', 100000, 99, 'ANH', 'NEW', '2020-11-11', '2022-10-10 18:30',2),
+	('P06', 'VÁY', 100000, 99, 'VIỆT_NAM', 'NOT_NEW', '2020-11-11', '2022-10-10 18:30',3),
+	('P07', 'Tất', 100000, 99, 'TRUNG_QUỐC', 'NOT_NEW', '2020-11-11', '2022-10-10 18:30',5),
+	('P08', 'Áo Sơ Mi', 100000, 99, 'VIỆT_NAM', 'NEW', '2020-11-11', '2022-10-10 18:30',1),
+	('P09', 'Mũ lưỡi trai', 100000, 99, 'MỸ', 'NOT_NEW', '2020-11-11', '2022-10-10 18:30',6),
+	('P10', 'giày adidas', 100000, 99, 'ANH', 'NOT_NEW', '2020-11-11', '2022-10-10 18:30',4);
+
+INSERT INTO orders
+VALUES
+	(1, 5, 500000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(2, 4, 600000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(3, 2, 300000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(4, 1, 150000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(5, 5, 650000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(6, 7, 1100000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(7, 2, 300000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(8, 5, 800000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(9, 1, 170000, '2022-11-10', '2022-10-10', '2022-10-10 18:30'),
+	(10, 3, 400000, '2022-11-10', '2022-10-10', '2022-10-10 18:30');
+
+INSERT INTO order_products
+VALUES
+	(1,1),
+	(1,2),
+	(1,5),
+	(1,3),
+	(3,10),
+	(2,7),
+	(2,4),
+	(5,2),
+	(6,8),
+	(4,6);
+
+-- Hiển thị danh sách sản phẩm gồm: product_code, product_name, country, category_name
+
+SELECT a.product_code,a.product_name,a.from_country,b.category_name
+FROM products a
+JOIN categories b
+ON a.product_category = b.id;
+	
+-- Tìm ra những sản phẩm có chứa kĩ tự ‘g’
+
+SELECT * FROM products
+WHERE product_name LIKE '%g%';
+
+-- Tìm ra những sản phẩm có chứa kĩ tự ‘g’ và có số lượng lớn hơn 20
+
+SELECT * FROM products
+WHERE product_name LIKE '%g%' AND quantity > 20;
+
+-- Thống kê số lượng đơn hàng theo ngày
+
+SELECT paid_date,COUNT(paid_date)
+FROM orders
+GROUP BY paid_date;
